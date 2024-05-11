@@ -5,10 +5,11 @@ package main
 import (
 	"fmt"
 	"html/template"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
 	"net/url"
+	"os"
 	"path"
 	"strconv"
 	"strings"
@@ -100,7 +101,7 @@ func UploadHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Println(err)
 	}
-	data, err := ioutil.ReadAll(file)
+	data, err := io.ReadAll(file)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -112,7 +113,7 @@ func UploadHandler(w http.ResponseWriter, r *http.Request) {
 	//causes Issue if file uploaded from diff directory.
 	fileName := handler.Filename[strings.LastIndex(handler.Filename, "/")+1:]
 	FileName := FilePath + "/" + fileName
-	err = ioutil.WriteFile(FileName, data, 0777)
+	err = os.WriteFile(FileName, data, 0777)
 	if err != nil {
 		fmt.Println(err)
 		panic(err)
